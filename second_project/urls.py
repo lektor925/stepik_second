@@ -16,9 +16,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from job.views import MainView
+from job.views import MainView, VacanciesView, VacanciesCatView
 
 urlpatterns = [
-    path('', MainView.as_view()),
+    path('', MainView.as_view(), name='home'),
+    path('vacancies/', VacanciesView.as_view(), name='vacancies'),
+    path('vacancies/cat/<str:job>', VacanciesCatView.as_view(), name='vacancies_cat'),
     path('admin/', admin.site.urls),
 ]
