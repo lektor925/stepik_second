@@ -1,7 +1,8 @@
+from django.db.models import Count
 from django.shortcuts import render
 from django.views.generic import TemplateView, ListView
 
-from job.models import Specialty, Company
+from job.models import Specialty, Company, Vacancy
 
 
 class MainView(TemplateView):
@@ -9,17 +10,19 @@ class MainView(TemplateView):
 
 	def get_context_data(self, **kwargs):
 		context = super(MainView, self).get_context_data(**kwargs)
-		context['specialty'] = Specialty.objects.all()
-		context['company'] = Company.objects.all()
+		context['specialty'] = Specialty.objects.annotate(Count('vacancies__specialty'))
+		context['company'] = Company.objects.annotate(Count('company__company'))
 		return context
 
 
-class VacanciesAllView(TemplateView):
+class VacanciesAllView(ListView):
 	template_name = 'job/vacancies.html'
+	model = Vacancy
 
 
-class VacanciesCatView(TemplateView):
+class VacanciesCatView(ListView):
 	template_name = 'job/vacancies.html'
+	model = Vacancy
 
 
 class VacancyDetail(TemplateView):
