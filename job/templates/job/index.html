@@ -30,18 +30,18 @@
         <h2 class="h2 font-weight-normal text-center mb-5">Вакансии по рубрикам</h2>
         <div class="row mb-0">
 
-            {% for item in specialty %}
+            {% for spec in specialty %}
                 <div class="col-6 col-md-6 col-lg-3">
                     <div class="card pt-4 text-center mb-4">
-                        <img class="mx-auto d-block" src="{{ item.picture }}" width="100" height="60" alt="">
+                        <img class="mx-auto d-block" src="{{ spec.picture }}" width="100" height="60" alt="">
                         <div class="card-body">
-                            <p class="card-text mb-2">{{ item.title }}</p>
+                            <p class="card-text mb-2">{{ spec.title }}</p>
                             <p class="card-text">
-                                {% if item.vacancies__specialty__count > 0 %}
-                                    <a href="vacancies/cat/{{ item.code }}">{{ item.vacancies__specialty__count }}
+                                {% if spec.vacancies__specialty__count > 0 %}
+                                    <a href="vacancies/cat/{{ spec.code }}">{{ spec.vacancies__specialty__count }}
                                         вакансий</a>
                                 {% else %}
-                                    <span>{{ item.vacancies__specialty__count }} вакансий</span>
+                                    <span>{{ spec.vacancies__specialty__count }} вакансий</span>
                                 {% endif %}
                             </p>
                         </div>
@@ -55,18 +55,18 @@
     <section class="my-5 pt-3">
         <h2 class="h2 font-weight-normal text-center mb-5">Нам доверяют лучшие компании</h2>
         <div class="row mb-0">
-            {% for item in company %}
+            {% for comp in company %}
                 <div class="col-6 col-md-6 col-lg-3">
                     <div class="card pt-4 text-center mb-4">
-                        <a href="companies/{{ item.id }}" style="max-width: 150px;" class="mx-auto d-block">
-                            <img class="mx-auto d-block mw-100" src="{{ item.logo }}" alt="">
+                        <a href="{% url 'company_detail' comp.id %}" style="max-width: 150px;" class="mx-auto d-block">
+                            <img class="mx-auto d-block mw-100" src="{{ comp.logo }}" alt="">
                         </a>
                         <div class="card-body">
                             <p class="card-text">
-                                {% if item.company__company__count > 0 %}
-                                    <a href="companies/{{ item.id }}">{{ item.company__company__count }} вакансий</a>
+                                {% if comp.company__company__count > 0 %}
+                                    <a href="{% url 'company_detail' comp.id %}">{{ comp.company__company__count }} вакансий</a>
                                 {% else %}
-                                    <span>{{ item.company__company__count }} вакансий</span>
+                                    <span>{{ comp.company__company__count }} вакансий</span>
                                 {% endif %}
                             </p>
                         </div>
