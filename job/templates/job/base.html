@@ -19,12 +19,17 @@
         </button>
         <div class="collapse navbar-collapse justify-content-between" id="navbarNav">
             <ul class="navbar-nav col-10">
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'vacancies' %}">Вакансии</a>
+
+                {% url 'vacancies' as vacancies_url %}
+                <li class="nav-item {% if vacancies_url == request.path %}active{% endif %}">
+                    <a class="nav-link" href="{{ vacancies_url }}">Вакансии</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'company_all' %}">Компании</a>
+
+                {% url 'company_all' as company_all_url %}
+                <li class="nav-item {% if company_all_url == request.path %}active{% endif %}">
+                    <a class="nav-link" href="{{ company_all_url }}">Компании</a>
                 </li>
+
                 <li class="nav-item">
                     <a class="nav-link" href="#">О проекте</a>
                 </li>

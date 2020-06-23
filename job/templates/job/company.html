@@ -1,7 +1,7 @@
 {% extends 'job/base.html' %}
 
 {% block title %}
-    {{ company.name | title }} | {{ block.super }}
+    {{ vacancy_list.first.company.name | title }} | {{ block.super }}
 {% endblock title %}
 
 {% block content %}
@@ -10,9 +10,9 @@
     </div>
     <section>
         <div class="text-center">
-            <img src="{{ company.logo }}" width="100" height="60" alt="">
+            <img src="{{ vacancy_list.first.company.logo }}" width="100" height="60" alt="">
         </div>
-        <h1 class="h1 text-center mx-auto mt-0 pt-1" style="font-size: 70px;"><strong>{{ company.name |title }}</strong>
+        <h1 class="h1 text-center mx-auto mt-0 pt-1" style="font-size: 70px;"><strong>{{ vacancy_list.first.company.name | title }}</strong>
         </h1>
         <p class="text-center pt-1">Компания, {{ vacancy_list.count }} вакансий</p>
         <div class="row mt-5">

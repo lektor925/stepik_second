@@ -1,13 +1,23 @@
 {% extends 'job/base.html' %}
 
 {% block title %}
-    {{ category.title }} | {{ block.super }}
+    {% if page_title %}
+        {{ page_title }} | {{ block.super }}
+    {% else %}
+        {{ vacancy_list.first.specialty.title }} | {{ block.super }}
+    {% endif %}
 {% endblock title %}
 
 {% block content %}
     <section>
         <h1 class="h1 text-center mx-auto mt-4 pt-5" style="font-size: 70px;">
-            <strong>{{ category.title }}</strong>
+            <strong>
+                {% if page_title %}
+                    {{ page_title }}
+                {% else %}
+                    {{ vacancy_list.first.specialty.title }}
+                {% endif %}
+            </strong>
         </h1>
         <p class="text-center pt-1">{{ vacancy_list.count }} вакансий</p>
         <div class="row mt-5">
@@ -29,7 +39,7 @@
                                 </div>
                                 <div class="col-12 col-md-4 col-lg-3 d-flex align-items-end">
                                     <a href="{% url 'vacancy_detail' vacancy.id %}">
-                                        <img src="{{ category.picture }}" width="100" height="60" alt="">
+                                        <img src="{{ vacancy.company.logo }}" width="100" height="60" alt="{{ vacancy.company.name }}">
                                     </a>
                                 </div>
                             </div>
