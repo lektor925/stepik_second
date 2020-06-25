@@ -1,0 +1,18 @@
+{% extends 'job/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+    Авторизация | {{ block.super }}
+{% endblock title %}
+
+{% block content %}
+    <div class="row justify-content-center mt-5">
+        <div class="col-6">
+            <form method="post" action="">
+                {% csrf_token %}
+                {{ form | crispy }}
+                <button type="submit" class="btn btn-primary btn-block">Войти</button>
+            </form>
+        </div>
+    </div>
+{% endblock content %}

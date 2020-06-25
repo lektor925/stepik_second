@@ -35,9 +35,19 @@
                 </li>
             </ul>
             <ul class="navbar-nav col-2 justify-content-end">
-                <li class="nav-item active">
-                    <a href="#" class="nav-link font-weight-bold">Вход</a>
-                </li>
+
+                {% if user.is_authenticated %}
+                    <li class="nav-item active">
+                        <a href="{% url 'user_logout' %}" class="nav-link font-weight-bold">Выход</a>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a href="{% url 'user_login' %}" class="nav-link font-weight-bold">Вход</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{% url 'user_register' %}" class="nav-link font-weight-bold">Регистрация</a>
+                    </li>
+                {% endif %}
             </ul>
         </div>
     </nav>

@@ -1,3 +1,20 @@
-# from django.contrib import admin
+from django.contrib import admin
 
-# Register your models here.
+from job.models import Company, Specialty, Vacancy
+
+
+class CompanyAdmin(admin.ModelAdmin):
+    pass
+
+
+class SpecialtyAdmin(admin.ModelAdmin):
+    pass
+
+
+class VacancyAdmin(admin.ModelAdmin):
+    pass
+
+
+admin.site.register(Company, CompanyAdmin)
+admin.site.register(Specialty, SpecialtyAdmin)
+admin.site.register(Vacancy, VacancyAdmin)
