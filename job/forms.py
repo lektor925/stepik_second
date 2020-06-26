@@ -1,6 +1,6 @@
 from django.forms import ModelForm
 
-from job.models import Application
+from job.models import Application, Company
 
 
 class ApplicationFormVacancyDetail(ModelForm):
@@ -13,3 +13,8 @@ class ApplicationFormVacancyDetail(ModelForm):
             'written_cover_letter': 'Сопроводительное письмо'
         }
 
+
+class CompanyForm(ModelForm):
+    class Meta:
+        model = Company
+        fields = ['name', 'location', 'logo', 'description', 'employee_count', 'owner']

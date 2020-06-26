@@ -5,7 +5,7 @@ from django.shortcuts import redirect
 from django.views.generic import TemplateView, ListView, DetailView, CreateView
 
 from job.forms import ApplicationFormVacancyDetail
-from job.models import Specialty, Company, Vacancy
+from job.models import Specialty, Company, Vacancy, Application
 
 
 class MainView(TemplateView):
@@ -46,7 +46,7 @@ class VacancyDetail(DetailView):
     def get_context_data(self, **kwargs):
         context = super(VacancyDetail, self).get_context_data(**kwargs)
         context['form'] = ApplicationFormVacancyDetail()
-        context['vacansy_id'] = self.kwargs['pk']
+        context['vacancy_id'] = self.kwargs['pk']
         return context
 
 
@@ -54,13 +54,34 @@ class VacancySend(TemplateView):
     template_name = 'job/send.html'
 
     def post(self, request, *args, **kwargs):
-        print(request.POST)
-        print(self.kwargs['vacansy_id'])
-        return redirect('/')
+        if request.user.is_authenticated:
+            Application.objects.create(
+                written_username=request.POST['written_username'],
+                written_phone=request.POST['written_phone'],
+                written_cover_letter=request.POST['written_cover_letter'],
+                user=request.user,
+                vacancy=Vacancy.objects.get(id=self.kwargs['vacancy_id'])
+            )
+            return redirect(request.path)
+        else:
+            base_path = request.path.split('/')[:-2]
+            new_path = '/'.join(base_path)
+            return redirect(new_path)
+
+    def get_context_data(self, **kwargs):
+        context = super(VacancySend, self).get_context_data(**kwargs)
+        context['vacancy'] = Vacancy.objects.filter(id=self.kwargs['vacancy_id'])
+        return context
 
 
 class CompaniesAll(ListView):
     model = Company
+
+    def get_context_data(self, **kwargs):
+        context = super(CompaniesAll, self).get_context_data(**kwargs)
+        if self.request.user.is_authenticated:
+            context['company_list'] = Company.objects.filter(owner=self.request.user)
+        return context
 
 
 class CompanyDetail(ListView):
