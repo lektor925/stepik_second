@@ -19,18 +19,18 @@ class MainView(TemplateView):
         return context
 
 
-class VacanciesAllView(ListView):
+class VacanciesListView(ListView):
     template_name = 'job/vacancies.html'
     model = Vacancy
 
-    def get_context_data(self, *, object_list=None, **kwargs):
-        context = super(VacanciesAllView, self).get_context_data(**kwargs)
+    def get_context_data(self, **kwargs):
+        context = super(VacanciesListView, self).get_context_data(**kwargs)
         context['page_title'] = 'Все вакансии'
         context['vacancy_list'] = Vacancy.objects.all()
         return context
 
 
-class VacanciesCatView(ListView):
+class VacanciesCatListView(ListView):
     template_name = 'job/vacancies.html'
     model = Vacancy
     allow_empty = False
@@ -39,18 +39,18 @@ class VacanciesCatView(ListView):
         return Vacancy.objects.filter(specialty__code=self.kwargs['code'])
 
 
-class VacancyDetail(DetailView):
+class VacancyDetailView(DetailView):
     template_name = 'job/vacancy.html'
     model = Vacancy
 
     def get_context_data(self, **kwargs):
-        context = super(VacancyDetail, self).get_context_data(**kwargs)
+        context = super(VacancyDetailView, self).get_context_data(**kwargs)
         context['form'] = ApplicationFormVacancyDetail()
         context['vacancy_id'] = self.kwargs['pk']
         return context
 
 
-class VacancySend(TemplateView):
+class VacancyDetailSend(TemplateView):
     template_name = 'job/send.html'
 
     def post(self, request, *args, **kwargs):
@@ -69,39 +69,36 @@ class VacancySend(TemplateView):
             return redirect(new_path)
 
     def get_context_data(self, **kwargs):
-        context = super(VacancySend, self).get_context_data(**kwargs)
+        context = super(VacancyDetailSend, self).get_context_data(**kwargs)
         context['vacancy'] = Vacancy.objects.filter(id=self.kwargs['vacancy_id'])
         return context
 
 
-class CompaniesAll(ListView):
+class CompaniesListView(ListView):
     model = Company
 
     def get_context_data(self, **kwargs):
-        context = super(CompaniesAll, self).get_context_data(**kwargs)
+        context = super(CompaniesListView, self).get_context_data(**kwargs)
         if self.request.user.is_authenticated:
             context['company_list'] = Company.objects.filter(owner=self.request.user)
         return context
 
 
-class CompanyDetail(ListView):
+class CompanyDetailView(DetailView):
     template_name = 'job/company.html'
-    model = Vacancy
+    model = Company
     allow_empty = False
 
-    def get_queryset(self):
-        return Vacancy.objects.filter(company_id=self.kwargs['id'])
 
-
-class MyCompanyDetail(TemplateView):
+class MyCompanyDetailView(TemplateView):
     pass
 
 
-class MyCompanyVacancies(TemplateView):
+class MyCompanyVacanciesListView(TemplateView):
     pass
 
 
-class MyCompanyVacancyDetail(TemplateView):
+class MyCompanyVacancyDetailView(TemplateView):
     pass
 
 
