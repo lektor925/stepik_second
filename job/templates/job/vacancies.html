@@ -4,7 +4,7 @@
     {% if page_title %}
         {{ page_title }} | {{ block.super }}
     {% else %}
-        {{ vacancy_list.first.specialty.title }} | {{ block.super }}
+        {{ category_title }} | {{ block.super }}
     {% endif %}
 {% endblock title %}
 
@@ -15,7 +15,7 @@
                 {% if page_title %}
                     {{ page_title }}
                 {% else %}
-                    {{ vacancy_list.first.specialty.title }}
+                    {{ category_title }}
                 {% endif %}
             </strong>
         </h1>

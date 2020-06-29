@@ -4,7 +4,7 @@ from django.db.models import Count
 from django.shortcuts import redirect
 from django.views.generic import TemplateView, ListView, DetailView, CreateView
 
-from job.forms import ApplicationFormVacancyDetail
+from job.forms import ApplicationFormVacancyDetail, CompanyForm
 from job.models import Specialty, Company, Vacancy, Application
 
 
@@ -26,7 +26,7 @@ class VacanciesListView(ListView):
     def get_context_data(self, **kwargs):
         context = super(VacanciesListView, self).get_context_data(**kwargs)
         context['page_title'] = 'Все вакансии'
-        context['vacancy_list'] = Vacancy.objects.all()
+        context['vacancy_list'] = Vacancy.objects.select_related('company')
         return context
 
 
@@ -35,8 +35,13 @@ class VacanciesCatListView(ListView):
     model = Vacancy
     allow_empty = False
 
-    def get_queryset(self):
-        return Vacancy.objects.filter(specialty__code=self.kwargs['code'])
+    def get_context_data(self, **kwargs):
+        context = super(VacanciesCatListView, self).get_context_data(**kwargs)
+        context['vacancy_list'] = Vacancy.objects.filter(specialty__code=self.kwargs['code'])\
+            .select_related('specialty')\
+            .select_related('company')
+        context['category_title'] = Specialty.objects.get(code=self.kwargs['code'])
+        return context
 
 
 class VacancyDetailView(DetailView):
@@ -89,9 +94,25 @@ class CompanyDetailView(DetailView):
     model = Company
     allow_empty = False
 
+    def get_context_data(self, **kwargs):
+        context = super(CompanyDetailView, self).get_context_data(**kwargs)
+        context['vacancy_list'] = Vacancy.objects.filter(company=self.kwargs['pk'])\
+            .select_related('specialty').select_related('company')
+        return context
+
 
 class MyCompanyDetailView(TemplateView):
-    pass
+    template_name = 'job/company-edit.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(MyCompanyDetailView, self).get_context_data(**kwargs)
+        context['company'] = Company.objects.get(owner=self.request.user)
+        context['company_form'] = CompanyForm
+        return context
+
+    def post(self, request, *args, **kwargs):
+        print(request.POST)
+        return redirect(request.path)
 
 
 class MyCompanyVacanciesListView(TemplateView):
