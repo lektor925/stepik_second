@@ -15,10 +15,22 @@ class ApplicationFormVacancyDetail(ModelForm):
         }
 
 
-class CompanyForm(ModelForm):
-    name = forms.CharField(label='Название компании', widget=forms.widgets.Input(attrs={'class': 'form-control', 'value': 'test'}))
-
+class CompanyForm(forms.ModelForm):
     class Meta:
         model = Company
-        fields = ['name', 'location', 'logo', 'description', 'employee_count', 'owner']
+        fields = ['name', 'location', 'logo', 'description', 'employee_count']
+        labels = {
+            'name': 'Название компании',
+            'employee_count': 'Количество человек в компании',
+            'location': 'География',
+            'logo': 'Логотип',
+            'description': 'Информация о компании',
+        }
+        widgets = {
+            'name': forms.widgets.Input(attrs={'class': 'form-control'}),
+            'employee_count': forms.widgets.Input(attrs={'class': 'form-control'}),
+            'location': forms.widgets.Input(attrs={'class': 'form-control'}),
+            'description': forms.widgets.Textarea(attrs={'class': 'form-control', 'rows': 5}),
+            'logo': forms.widgets.FileInput(attrs={'class': 'custom-file-input'}),
+        }
 

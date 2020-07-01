@@ -1,7 +1,9 @@
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.views import LoginView
 from django.db.models import Count
-from django.shortcuts import redirect
+from django.http import HttpResponseRedirect
+from django.shortcuts import redirect, render
+from django.urls import reverse_lazy
 from django.views.generic import TemplateView, ListView, DetailView, CreateView
 
 from job.forms import ApplicationFormVacancyDetail, CompanyForm
@@ -101,18 +103,39 @@ class CompanyDetailView(DetailView):
         return context
 
 
-class MyCompanyDetailView(TemplateView):
+class MyCompanyBlankView(TemplateView):
+    template_name = 'job/company-create.html'
+
+
+class MyCompanyDetailView(CreateView):
+    form_class = CompanyForm
     template_name = 'job/company-edit.html'
 
-    def get_context_data(self, **kwargs):
-        context = super(MyCompanyDetailView, self).get_context_data(**kwargs)
-        context['company'] = Company.objects.get(owner=self.request.user)
-        context['company_form'] = CompanyForm
-        return context
-
     def post(self, request, *args, **kwargs):
-        print(request.POST)
-        return redirect(request.path)
+        form = CompanyForm(request.POST, request.FILES)
+
+        if form.is_valid():
+            print(form.cleaned_data)
+            Company.objects.create(owner=request.user, **form.cleaned_data)
+        return redirect(reverse_lazy('my_company_detail'))
+
+
+def my_company_edit(request):
+    try:
+        company = Company.objects.get(owner=request.user)
+    except:
+        return redirect(reverse_lazy('my_company_blank'))
+
+    if request.method == 'POST':
+        company_form = CompanyForm(request.POST, instance=company)
+        if company_form.is_valid():
+            company_form.save()
+            return HttpResponseRedirect(reverse_lazy('my_company_detail'))
+        else:
+            return render(request, 'job/company-edit.html', {'form': company_form })
+    else:
+        company_form = CompanyForm(instance=company)
+        return render(request, 'job/company-edit.html', {'form': company_form, 'company': company})
 
 
 class MyCompanyVacanciesListView(TemplateView):

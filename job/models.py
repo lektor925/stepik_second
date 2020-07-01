@@ -5,7 +5,7 @@ from django.db import models
 class Company(models.Model):
     name = models.CharField(max_length=255)
     location = models.CharField(max_length=255, blank=True, null=True)
-    logo = models.ImageField(upload_to='companies')
+    logo = models.ImageField(upload_to='companies', blank=True)
     description = models.TextField(blank=True, null=True)
     employee_count = models.IntegerField(blank=True, null=True)
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='company', null=True)
