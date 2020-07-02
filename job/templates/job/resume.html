@@ -1,10 +1,34 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-resume
-</body>
-</html>
+{% extends 'job/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+    Мое резюме | {{ block.super }}
+{% endblock title %}
+
+{% block style %}
+    {% include 'job/inc/_style_auth.html' %}
+{% endblock style %}
+
+{% block content %}
+    <div class="row mt-5">
+        {% include 'job/inc/cabinet_sidebar.html' %}
+        <div class="col-12 col-lg-8">
+            <div class="card">
+                <div class="card-body px-4 pb-4">
+                    <!-- Tab -->
+                    <section class="pl-3">
+                    <h1 class="h2 mt-4 font-weight-bold">Мое резюме</h1>
+                        <form action="{% url 'my_resume' %}" method="post">
+                            {% csrf_token %}
+                            {{ form | crispy }}
+                            <div class="form-group">
+                                <input type="submit" class="btn btn-info" value="Сохранить">
+                            </div>
+                        </form>
+                    </section>
+                    <!-- END Tab -->
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

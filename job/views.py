@@ -1,13 +1,13 @@
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.views import LoginView
-from django.db.models import Count
+from django.db.models import Count, Q
 from django.http import HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, ListView, DetailView, CreateView
 
-from job.forms import ApplicationFormVacancyDetail, CompanyForm, VacancyForm, SearchForm
-from job.models import Specialty, Company, Vacancy, Application
+from job.forms import ApplicationFormVacancyDetail, CompanyForm, VacancyForm, SearchForm, ResumeForm
+from job.models import Specialty, Company, Vacancy, Application, Resume
 
 
 class MainView(TemplateView):
@@ -167,8 +167,24 @@ def my_company_vacancy_edit(request, pk):
         return render(request, 'job/company_vacancy.html', {'form': vacancy_form, 'vacancy': vacancy})
 
 
-class MyResumeAddView(TemplateView):
+class MyResumeAddView(CreateView):
     template_name = 'job/resume.html'
+    form_class = ResumeForm
+
+
+def my_resume_edit(request):
+    resume = Resume.objects.all()
+
+    if request.method == 'POST':
+        resume_form = ResumeForm(request.POST, instance=resume)
+        if resume_form.is_valid():
+            resume_form.save()
+            return HttpResponseRedirect(reverse_lazy('my_resume'))
+        else:
+            return render(request, 'job/resume.html', {'form': resume_form})
+    else:
+        resume_form = ResumeForm(instance=resume)
+        return render(request, 'job/resume.html', {'form': resume_form, 'vacancy': resume})
 
 
 class SearchListView(TemplateView):
@@ -176,7 +192,13 @@ class SearchListView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(SearchListView, self).get_context_data(**kwargs)
+        context['search_form'] = SearchForm
         context['s'] = self.request.GET['s']
+        context['vacancy_list'] = Vacancy.objects.filter(
+            Q(title__icontains=self.request.GET['s']) |
+            Q(description__icontains=self.request.GET['s']) |
+            Q(skills__icontains=self.request.GET['s'])
+        )
         return context
 
 

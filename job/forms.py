@@ -1,7 +1,7 @@
 from django import forms
 from django.forms import ModelForm
 
-from job.models import Application, Company, Vacancy
+from job.models import Application, Company, Vacancy, Resume
 
 
 class ApplicationFormVacancyDetail(ModelForm):
@@ -59,3 +59,25 @@ class SearchForm(forms.Form):
         'placeholder': 'Найти работу или стажировку',
         'label': 'Поиск'
     }))
+
+
+class ResumeForm(forms.ModelForm):
+    class Meta:
+        model = Resume
+        fields = ['name', 'surname', 'status', 'salary', 'specialty', 'grade', 'education', 'experience', 'portfolio']
+        labels = {
+            'name': 'Имя',
+            'surname': 'Фамилия',
+            'status': 'Статус',
+            'salary': 'Зарплата',
+            'specialty': 'Специализация',
+            'grade': 'Квалификация',
+            'education': 'Образование',
+            'experience': 'Опыт работы',
+            'portfolio': 'Портфолио'
+        }
+        widgets = {
+            'experience': forms.widgets.Textarea(attrs={'rows': 3}),
+            'portfolio': forms.widgets.Textarea(attrs={'rows': 3})
+        }
+

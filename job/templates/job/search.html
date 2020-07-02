@@ -1,10 +1,53 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-search {{ s }}
-</body>
-</html>
+{% extends 'job/base.html' %}
+{% load vacancy_filter %}
+
+{% block title %}
+    Поиск | {{ block.super }}
+{% endblock title %}
+
+{% block content %}
+    <section>
+    {% include 'job/inc/search_form.html' %}
+        <h1 class="h3 text-center mx-auto mt-4 pt-5" style="font-size: 30px;">
+            <strong>Результаты поиска по запросу "{{ s | title }}"
+            </strong>
+        </h1>
+        <p class="text-center pt-1">
+            {% if vacancy_list.count == 0 %}
+                Нет вакансий
+            {% else %}
+                {{ vacancy_list.count | myvacancy }}
+            {% endif %}
+        </p>
+        <div class="row mt-5">
+            <div class="col-12 col-lg-8 offset-lg-2 m-auto">
+
+                {% for vacancy in vacancy_list %}
+                    <div class="card mb-4">
+                        <div class="card-body px-4">
+                            <div class="row">
+                                <div class="col-12 col-md-8 col-lg-9">
+                                    <h2 class="h2 pb-2">{{ vacancy.title }}</h2>
+                                    <p class="mb-2">
+                                        {% if vacancy.skills != None %}
+                                            {{ vacancy.skills }}
+                                        {% endif %}
+                                    </p>
+                                    <p>От {{ vacancy.salary_min }} до {{ vacancy.salary_max }} руб.</p>
+                                    <p class="text-muted pt-1">{{ vacancy.published_at | date:'j F Y' }}</p>
+                                </div>
+                                <div class="col-12 col-md-4 col-lg-3 d-flex align-items-end">
+                                    <a href="{% url 'vacancy_detail' vacancy.id %}">
+                                        <img src="{{ vacancy.company.logo.url }}" width="100" height="60"
+                                             alt="{{ vacancy.company.name }}">
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+
+            </div>
+        </div>
+    </section>
+{% endblock content %}

@@ -6,7 +6,7 @@ from django.urls import path, include
 from job.views import MainView, UserLogin, UserRegister, VacanciesListView, \
     VacanciesCatListView, VacancyDetailView, VacancyDetailSend, CompaniesListView, CompanyDetailView, \
     MyCompanyDetailView, MyCompanyVacanciesListView, my_company_edit, MyCompanyBlankView, \
-    MyCompanyVacancyAddView, my_company_vacancy_edit, MyResumeAddView, SearchListView
+    MyCompanyVacancyAddView, my_company_vacancy_edit, SearchListView, my_resume_edit, MyResumeAddView
 from second_project import settings
 
 
@@ -19,7 +19,8 @@ if settings.DEBUG:
         path('vacancies/<int:vacancy_id>/send/', VacancyDetailSend.as_view(), name='vacancy_send'),
         path('companies/', CompaniesListView.as_view(), name='company_all'),
         path('companies/<int:pk>', CompanyDetailView.as_view(), name='company_detail'),
-        path('myresume/', MyResumeAddView.as_view(), name='my_company_detail'),
+        path('myresume/', my_resume_edit, name='my_resume'),
+        path('myresume/add/', MyResumeAddView.as_view(), name='my_resume'),
         path('search/', SearchListView.as_view(), name='search'),
         path('mycompany/', my_company_edit, name='my_company_detail'),
         path('mycompany/blank/', MyCompanyBlankView.as_view(), name='my_company_blank'),
