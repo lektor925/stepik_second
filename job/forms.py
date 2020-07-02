@@ -51,3 +51,11 @@ class VacancyForm(forms.ModelForm):
             'skills': forms.widgets.Textarea(attrs={'rows': 3}),
             'description': forms.widgets.Textarea(attrs={'rows': 5})
         }
+
+
+class SearchForm(forms.Form):
+    s = forms.CharField(max_length=255, widget=forms.widgets.Input(attrs={
+        'class': 'form-control w-100',
+        'placeholder': 'Найти работу или стажировку',
+        'label': 'Поиск'
+    }))

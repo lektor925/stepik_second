@@ -6,7 +6,7 @@ from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, ListView, DetailView, CreateView
 
-from job.forms import ApplicationFormVacancyDetail, CompanyForm, VacancyForm
+from job.forms import ApplicationFormVacancyDetail, CompanyForm, VacancyForm, SearchForm
 from job.models import Specialty, Company, Vacancy, Application
 
 
@@ -18,6 +18,7 @@ class MainView(TemplateView):
         context['specialty'] = Specialty.objects.annotate(Count('vacancies__specialty'))
         context['company'] = Company.objects.annotate(Count('company__company'))
         context['search_list'] = context['specialty'][:4]
+        context['search_form'] = SearchForm
         return context
 
 
@@ -164,6 +165,19 @@ def my_company_vacancy_edit(request, pk):
     else:
         vacancy_form = VacancyForm(instance=vacancy)
         return render(request, 'job/company_vacancy.html', {'form': vacancy_form, 'vacancy': vacancy})
+
+
+class MyResumeAddView(TemplateView):
+    template_name = 'job/resume.html'
+
+
+class SearchListView(TemplateView):
+    template_name = 'job/search.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(SearchListView, self).get_context_data(**kwargs)
+        context['s'] = self.request.GET['s']
+        return context
 
 
 class UserLogin(LoginView):

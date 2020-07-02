@@ -46,3 +46,30 @@ class Application(models.Model):
     written_cover_letter = models.TextField()
     vacancy = models.ForeignKey(Vacancy, on_delete=models.CASCADE, related_name='applications')
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='applications')
+
+
+class Status(models.Model):
+    title = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.title
+
+
+class Grade(models.Model):
+    title = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.title
+
+
+class Resume(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user')
+    name = models.CharField(max_length=64)
+    surname = models.CharField(max_length=64)
+    status = models.ForeignKey(Status, on_delete=models.CASCADE, related_name='status')
+    salary = models.CharField(max_length=100)
+    specialty = models.ForeignKey(Specialty, on_delete=models.CASCADE, related_name='specialty')
+    grade = models.ForeignKey(Grade, on_delete=models.CASCADE, related_name='grade')
+    education = models.CharField(max_length=100)
+    experience = models.TextField()
+    portfolio = models.TextField()
