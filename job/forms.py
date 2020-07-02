@@ -1,7 +1,7 @@
 from django import forms
 from django.forms import ModelForm
 
-from job.models import Application, Company
+from job.models import Application, Company, Vacancy
 
 
 class ApplicationFormVacancyDetail(ModelForm):
@@ -34,3 +34,20 @@ class CompanyForm(forms.ModelForm):
             'logo': forms.widgets.FileInput(attrs={'class': 'custom-file-input'}),
         }
 
+
+class VacancyForm(forms.ModelForm):
+    class Meta:
+        model = Vacancy
+        fields = ['title', 'specialty', 'skills', 'salary_min', 'salary_max', 'description']
+        labels = {
+            'title': 'Название вакансии',
+            'specialty': 'Специализация',
+            'skills': 'Навыки',
+            'salary_min': 'Минимальная зарплата',
+            'salary_max': 'Максимальная зарплата',
+            'description': 'Описание вакансии'
+        }
+        widgets = {
+            'skills': forms.widgets.Textarea(attrs={'rows': 3}),
+            'description': forms.widgets.Textarea(attrs={'rows': 5})
+        }

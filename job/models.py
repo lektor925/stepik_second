@@ -31,10 +31,13 @@ class Vacancy(models.Model):
     description = models.TextField()
     salary_min = models.IntegerField()
     salary_max = models.IntegerField()
-    published_at = models.DateTimeField()
+    published_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.title
+
+    class Meta:
+        ordering = ['-published_at']
 
 
 class Application(models.Model):

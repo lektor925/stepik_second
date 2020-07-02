@@ -6,7 +6,7 @@ from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, ListView, DetailView, CreateView
 
-from job.forms import ApplicationFormVacancyDetail, CompanyForm
+from job.forms import ApplicationFormVacancyDetail, CompanyForm, VacancyForm
 from job.models import Specialty, Company, Vacancy, Application
 
 
@@ -84,12 +84,6 @@ class VacancyDetailSend(TemplateView):
 class CompaniesListView(ListView):
     model = Company
 
-    def get_context_data(self, **kwargs):
-        context = super(CompaniesListView, self).get_context_data(**kwargs)
-        if self.request.user.is_authenticated:
-            context['company_list'] = Company.objects.filter(owner=self.request.user)
-        return context
-
 
 class CompanyDetailView(DetailView):
     template_name = 'job/company.html'
@@ -115,7 +109,6 @@ class MyCompanyDetailView(CreateView):
         form = CompanyForm(request.POST, request.FILES)
 
         if form.is_valid():
-            print(form.cleaned_data)
             Company.objects.create(owner=request.user, **form.cleaned_data)
         return redirect(reverse_lazy('my_company_detail'))
 
@@ -132,18 +125,45 @@ def my_company_edit(request):
             company_form.save()
             return HttpResponseRedirect(reverse_lazy('my_company_detail'))
         else:
-            return render(request, 'job/company-edit.html', {'form': company_form })
+            return render(request, 'job/company-edit.html', {'form': company_form})
     else:
         company_form = CompanyForm(instance=company)
         return render(request, 'job/company-edit.html', {'form': company_form, 'company': company})
 
 
-class MyCompanyVacanciesListView(TemplateView):
-    pass
+class MyCompanyVacanciesListView(ListView):
+    model = Vacancy
+    template_name = 'job/company_vacancies.html'
+
+    def get_queryset(self):
+        return Vacancy.objects.filter(company__owner=self.request.user).select_related('company')
 
 
-class MyCompanyVacancyDetailView(TemplateView):
-    pass
+class MyCompanyVacancyAddView(CreateView):
+    template_name = 'job/company_vacancy_add.html'
+    form_class = VacancyForm
+
+    def post(self, request, *args, **kwargs):
+        form = VacancyForm(request.POST)
+
+        if form.is_valid():
+            Vacancy.objects.create(company=Company.objects.get(owner=request.user), **form.cleaned_data)
+        return redirect(reverse_lazy('my_company_vacancies'))
+
+
+def my_company_vacancy_edit(request, pk):
+    vacancy = Vacancy.objects.get(id=pk)
+
+    if request.method == 'POST':
+        vacancy_form = VacancyForm(request.POST, instance=vacancy)
+        if vacancy_form.is_valid():
+            vacancy_form.save()
+            return HttpResponseRedirect(reverse_lazy('my_company_vacancy_detail', args=[pk]))
+        else:
+            return render(request, 'job/company_vacancy.html', {'form': vacancy_form})
+    else:
+        vacancy_form = VacancyForm(instance=vacancy)
+        return render(request, 'job/company_vacancy.html', {'form': vacancy_form, 'vacancy': vacancy})
 
 
 class UserLogin(LoginView):
@@ -153,5 +173,5 @@ class UserLogin(LoginView):
 
 class UserRegister(CreateView):
     form_class = UserCreationForm
-    success_url = '/'
+    success_url = reverse_lazy('home')
     template_name = 'job/register.html'
