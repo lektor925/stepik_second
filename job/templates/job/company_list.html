@@ -5,7 +5,7 @@
 {% endblock title %}
 
 {% block content %}
-    {% if user.is_authenticated %}
+    {% if not user.is_authenticated %}
         <section>
         <h1 class="h1 text-center mx-auto mt-4 pt-5" style="font-size: 70px;"><strong>{{ category.title }}</strong></h1>
         <p class="text-center pt-1">{{ company_list.count }} компаний</p>
