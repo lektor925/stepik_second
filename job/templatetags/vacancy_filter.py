@@ -4,7 +4,7 @@ register = template.Library()
 
 
 def myvacancy(value):
-    if value % 10 == 0 or value % 10 > 4 or (value % 100 >= 11) and (value % 100 <=15):
+    if value % 10 == 0 or value % 10 > 4 or (value % 100 >= 11) and (value % 100 <= 15):
         return f'{value} вакансий'
     elif value % 10 == 1:
         return f'{value} вакансия'

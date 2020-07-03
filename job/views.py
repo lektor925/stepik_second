@@ -171,9 +171,19 @@ class MyResumeAddView(CreateView):
     template_name = 'job/resume.html'
     form_class = ResumeForm
 
+    def post(self, request, *args, **kwargs):
+        form = ResumeForm(request.POST)
+
+        if form.is_valid():
+            Resume.objects.create(user=request.user, **form.cleaned_data)
+        return redirect(reverse_lazy('my_resume'))
+
 
 def my_resume_edit(request):
-    resume = Resume.objects.all()
+    try:
+        resume = Resume.objects.get(user=request.user)
+    except:
+        return redirect(reverse_lazy('my_resume_add'))
 
     if request.method == 'POST':
         resume_form = ResumeForm(request.POST, instance=resume)

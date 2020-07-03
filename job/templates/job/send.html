@@ -11,17 +11,19 @@
             <h3>Ваше сообщение успешно отправлено</h3>
 
             <img src="{% get_static_prefix %}check.png" alt="Ok" class="my-4" style="display: flex; margin: auto;">
-            <div class="card">
-                <div class="card-body">
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item">Компания:
-                            <strong>{{ vacancy.company.name| title }}</strong>
-                            <img src="{{ vacancy.company.logo.url }}" alt="{{ vacancy.company.name }}" width="100" height="60">
-                        </li>
-                        <li class="list-group-item">Вакансия: <strong>{{ vacancy.title }}</strong></li>
-                    </ul>
+            {% for item in vacancy %}
+                <div class="card">
+                    <div class="card-body">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">Компания:
+                                <strong>{{ item.company.name| title }}</strong>
+                                <img src="{{ item.company.logo.url }}" alt="{{ item.company.name }}" width="100" height="60">
+                            </li>
+                            <li class="list-group-item">Вакансия: <strong>{{ item.title}}</strong></li>
+                        </ul>
+                    </div>
                 </div>
-            </div>
+            {% endfor %}
         </div>
     </div>
 {% endblock content %}

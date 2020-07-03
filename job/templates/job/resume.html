@@ -18,7 +18,7 @@
                     <!-- Tab -->
                     <section class="pl-3">
                     <h1 class="h2 mt-4 font-weight-bold">Мое резюме</h1>
-                        <form action="{% url 'my_resume' %}" method="post">
+                        <form action="{{ request.path }}" method="post">
                             {% csrf_token %}
                             {{ form | crispy }}
                             <div class="form-group">

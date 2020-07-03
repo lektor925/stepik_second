@@ -80,4 +80,3 @@ class ResumeForm(forms.ModelForm):
             'experience': forms.widgets.Textarea(attrs={'rows': 3}),
             'portfolio': forms.widgets.Textarea(attrs={'rows': 3})
         }
-

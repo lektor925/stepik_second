@@ -20,7 +20,7 @@ if settings.DEBUG:
         path('companies/', CompaniesListView.as_view(), name='company_all'),
         path('companies/<int:pk>', CompanyDetailView.as_view(), name='company_detail'),
         path('myresume/', my_resume_edit, name='my_resume'),
-        path('myresume/add/', MyResumeAddView.as_view(), name='my_resume'),
+        path('myresume/add/', MyResumeAddView.as_view(), name='my_resume_add'),
         path('search/', SearchListView.as_view(), name='search'),
         path('mycompany/', my_company_edit, name='my_company_detail'),
         path('mycompany/blank/', MyCompanyBlankView.as_view(), name='my_company_blank'),
