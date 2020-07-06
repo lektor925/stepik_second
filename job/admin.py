@@ -16,7 +16,10 @@ class VacancyAdmin(admin.ModelAdmin):
 
 
 class ApplicationAdmin(admin.ModelAdmin):
-    pass
+    list_display = ['id', 'written_username', 'written_phone', 'vacancy', 'user']
+    list_display_links = ('id', 'written_username')
+    list_filter = ('vacancy', 'user')
+    list_per_page = 20
 
 
 class StatusAdmin(admin.ModelAdmin):
