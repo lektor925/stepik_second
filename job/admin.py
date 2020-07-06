@@ -4,15 +4,22 @@ from job.models import Company, Specialty, Vacancy, Application, Status, Grade, 
 
 
 class CompanyAdmin(admin.ModelAdmin):
-    pass
+    list_display = ['id', 'name', 'location', 'employee_count', 'owner']
+    list_display_links = ('id', 'name')
+    list_per_page = 20
 
 
 class SpecialtyAdmin(admin.ModelAdmin):
-    pass
+    list_display = ['id', 'title', 'code']
+    list_display_links = ('id', 'title')
+    list_per_page = 20
 
 
 class VacancyAdmin(admin.ModelAdmin):
-    pass
+    list_display = ['id', 'title', 'specialty', 'company', 'salary_min', 'salary_max', 'published_at']
+    list_display_links = ('id', 'title')
+    list_filter = ('specialty', 'company')
+    list_per_page = 20
 
 
 class ApplicationAdmin(admin.ModelAdmin):
@@ -23,15 +30,20 @@ class ApplicationAdmin(admin.ModelAdmin):
 
 
 class StatusAdmin(admin.ModelAdmin):
-    pass
+    list_display = ['id', 'title']
+    list_display_links = ('id', 'title')
 
 
 class GradeAdmin(admin.ModelAdmin):
-    pass
+    list_display = ['id', 'title']
+    list_display_links = ('id', 'title')
 
 
 class ResumeAdmin(admin.ModelAdmin):
-    pass
+    list_display = ['id', 'user', 'status', 'salary', 'specialty', 'grade', 'education']
+    list_display_links = ('id', 'user')
+    list_filter = ('status', 'specialty', 'grade', 'education')
+    list_per_page = 20
 
 
 admin.site.register(Company, CompanyAdmin)
