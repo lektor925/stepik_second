@@ -10,7 +10,7 @@
         <div class="col-6 justify-content-center">
             <h3>Ваше сообщение успешно отправлено</h3>
 
-            <img src="{% get_static_prefix %}check.png" alt="Ok" class="my-4" style="display: flex; margin: auto;">
+            <img src="{% static 'job/check.png' %}" alt="Ok" class="my-4" style="display: flex; margin: auto;">
             {% for item in vacancy %}
                 <div class="card">
                     <div class="card-body">
