@@ -44,12 +44,18 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='application',
             name='user',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='applications', to=settings.AUTH_USER_MODEL, verbose_name='Пользователь'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE,
+                                    related_name='applications',
+                                    to=settings.AUTH_USER_MODEL,
+                                    verbose_name='Пользователь'),
         ),
         migrations.AlterField(
             model_name='application',
             name='vacancy',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='applications', to='job.Vacancy', verbose_name='Вакансия'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE,
+                                    related_name='applications',
+                                    to='job.Vacancy',
+                                    verbose_name='Вакансия'),
         ),
         migrations.AlterField(
             model_name='application',
@@ -94,7 +100,10 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='company',
             name='owner',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, related_name='company', to=settings.AUTH_USER_MODEL, verbose_name='Владелец'),
+            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE,
+                                    related_name='company',
+                                    to=settings.AUTH_USER_MODEL,
+                                    verbose_name='Владелец'),
         ),
         migrations.AlterField(
             model_name='grade',
@@ -114,7 +123,9 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='resume',
             name='grade',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='grade', to='job.Grade', verbose_name='Квалификация'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE,
+                                    related_name='grade', to='job.Grade',
+                                    verbose_name='Квалификация'),
         ),
         migrations.AlterField(
             model_name='resume',
@@ -134,12 +145,16 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='resume',
             name='specialty',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='specialty', to='job.Specialty', verbose_name='Специализация'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE,
+                                    related_name='specialty', to='job.Specialty',
+                                    verbose_name='Специализация'),
         ),
         migrations.AlterField(
             model_name='resume',
             name='status',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='status', to='job.Status', verbose_name='Статус поиска'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE,
+                                    related_name='status', to='job.Status',
+                                    verbose_name='Статус поиска'),
         ),
         migrations.AlterField(
             model_name='resume',
@@ -149,7 +164,9 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='resume',
             name='user',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='user', to=settings.AUTH_USER_MODEL, verbose_name='Пользователь'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE,
+                                    related_name='user', to=settings.AUTH_USER_MODEL,
+                                    verbose_name='Пользователь'),
         ),
         migrations.AlterField(
             model_name='specialty',
@@ -174,7 +191,9 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='vacancy',
             name='company',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='company', to='job.Company', verbose_name='Компания'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE,
+                                    related_name='company', to='job.Company',
+                                    verbose_name='Компания'),
         ),
         migrations.AlterField(
             model_name='vacancy',
@@ -204,7 +223,9 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='vacancy',
             name='specialty',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='vacancies', to='job.Specialty', verbose_name='Специализация'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE,
+                                    related_name='vacancies', to='job.Specialty',
+                                    verbose_name='Специализация'),
         ),
         migrations.AlterField(
             model_name='vacancy',
